@@ -2,9 +2,7 @@
 
 <h1>Selected City</h1>
 
-<% if @default.nil? %>
-  <%= render 'select_city' %>
-<% else %>
+<% if !@default.nil? %>
   <table>
     <thead>
       <tr>
@@ -17,14 +15,16 @@
 
     <tbody>
         <tr>
-          <td><%= @default.name %></td>
-          <td><%= @default.time.to_s %></td>
+          <td><%= @default.name.upcase %></td>
+          <td><%= @default.display_time @enable_standard_format %></td>
           <td><%= @default.time_status %>
         </tr>
     </tbody>
   </table>
 <% end %>
-
+<%= render 'select_city', possible_options: @selectable_cities %>
+<%= render 'select_time_format'%>
+<%# get_possible_cities %>
 
 <h1>Cities</h1>
 
@@ -35,6 +35,7 @@
       <th>Time</th>
       <th>Time Status</th>
       <th>Time Difference</th>
+      <th>Day status </th>
       <th colspan="3"></th>
     </tr>
   </thead>
@@ -43,10 +44,11 @@
     <% @cities.each do |city| %>
       <tr>
         <% if !city.default %>
-          <td><%= city.name %></td>
-          <td><%= city.time.to_s %></td>
+          <td><%= city.name.upcase %></td>
+          <td><%= city.display_time @enable_standard_format %></td>
           <td><%= city.time_status %></td>
-          <td><%= city.time_difference.to_s %></td>
+          <td><%= city.time_difference.to_s %> hours </td>
+          <td><%= city.day_status %> </td>
           <td><%= link_to 'Show', city %></td>
           <td><%= link_to 'Edit', edit_city_path(city) %></td>
           <td><%= link_to 'Destroy', city, method: :delete, data: { confirm: 'Are you sure?' } %></td>
@@ -57,5 +59,7 @@
 </table>
 
 <br>
+
+<%= render 'search_city' %>
 
 <%= link_to 'New City', new_city_path %>

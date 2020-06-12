@@ -1,5 +1,6 @@
 class CitiesController < ApplicationController
   before_action :find_default
+  before_action :set_standard_format, only: [:index]
   before_action :update_time
   before_action :set_city, only: [:show, :edit, :update, :destroy]
 
@@ -8,6 +9,30 @@ class CitiesController < ApplicationController
   # GET /cities.json
   def index
     @cities = City.all
+    #@enable_standard_format = true
+    @selectable_cities = []
+    @cities.each do |city|
+      @selectable_cities << [city.name, city.id]
+    end
+
+    if params[:new_default].present?
+      puts "present"
+      puts params[:new_default].to_s
+      City.find_by(id: @default.id).remove_default
+      City.find_by(id: params[:new_default]).make_default
+      redirect_to root_url
+    end
+
+    if params[:change_time_format] == "1"
+      puts "CHANGING FORMAT"
+      # if @enable_standard_format
+      #   @enable_standard_format = false
+      # else
+      #   @enable_standard_format = true
+      # end
+      @enable_standard_format = false
+    end
+
   end
 
   # GET /cities/1
@@ -18,6 +43,7 @@ class CitiesController < ApplicationController
   # GET /cities/new
   def new
     @city = City.new
+
   end
 
   # GET /cities/1/edit
@@ -27,19 +53,64 @@ class CitiesController < ApplicationController
   # POST /cities
   # POST /cities.json
   def create
-    @city = City.new(city_params)
 
-    respond_to do |format|
-      if @city.save
-        format.html { redirect_to @city, notice: 'City was successfully created.' }
-        format.json { render :show, status: :created, location: @city }
+    if params[:search].present?
+      #@search_result = Resource.find_by("lower(city_name) LIKE :search", search: "%#{@search}%")
+      #@search_result = Resource.find_by("city_name LIKE :search", search: "#{@search}")
+      @search_result = Resource.find_by(city_name: params[:search].downcase)
+      if (!@search_result.nil?)
+        @city = City.new(
+          :name => @search_result.city_name,
+          :offset => @search_result.offset,
+          :default => false,
+          :time => Time.current,
+          :time_status => "",
+          :time_difference => 0.0
+        )
+        @city.save
+        redirect_to root_url
       else
-        format.html { render :new }
-        format.json { render json: @city.errors, status: :unprocessable_entity }
+        redirect_to root_url
       end
+    
     end
+    
+    #@city = City.new(city_params)
+
+     
+
+    # respond_to do |format|
+    #   if @city.save
+    #     format.html { redirect_to @city, notice: 'City was successfully created.' }
+    #     format.json { render :index, status: :created, location: @city }
+    #   else
+    #     format.html { render :new }
+    #     format.json { render json: @city.errors, status: :unprocessable_entity }
+    #   end
+    # end
   end
 
+  def create_via_search
+    if params[:search].present?
+      puts "AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA"
+      @search = params[:search].downcase
+      @search_result = Resource.find_by("lower(city_name) LIKE :search", search: "%#{@search}%")
+      #puts @search_result.city_name
+      #puts @search_result.offset
+      if (!@search_result.nil? and !@search_result.city_name.nil? and @search_result.offset.nil?)
+        @city = City.new(
+          :name => @search_result.city_name,
+          :offset => @search_result.offset,
+          :default => false,
+          :time => Time.current,
+          :time_status => "",
+          :time_difference => 0.0
+        )
+        @city.save
+        redirect_to root_url
+      end
+    end 
+  end
   # PATCH/PUT /cities/1
   # PATCH/PUT /cities/1.json
   def update
@@ -78,16 +149,21 @@ class CitiesController < ApplicationController
       @city = City.find(params[:id])
     end
 
+    def set_standard_format
+      @enable_standard_format = true
+    end
+
     def update_time
       City.all.each do |city|
         city.update_time
         city.update_time_status
+        city.update_day_status @default
         city.update_time_difference @default
       end
     end
 
     # Only allow a list of trusted parameters through.
     def city_params
-      params.require(:city).permit(:name, :time, :offset)
+      params.permit(:name, :time, :offset, :default, :time_status, :time_difference)
     end
 end

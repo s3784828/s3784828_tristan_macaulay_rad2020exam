@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2020_06_12_023337) do
+ActiveRecord::Schema.define(version: 2020_06_12_051422) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -24,6 +24,14 @@ ActiveRecord::Schema.define(version: 2020_06_12_023337) do
     t.boolean "default"
     t.string "time_status"
     t.float "time_difference"
+    t.string "day_status"
+  end
+
+  create_table "resources", force: :cascade do |t|
+    t.float "offset"
+    t.string "city_name"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
   end
 
   create_table "selected_cities", force: :cascade do |t|

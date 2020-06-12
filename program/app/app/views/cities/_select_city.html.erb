@@ -1,1 +1,4 @@
-<p> TODO </p>
+<%= form_tag(cities_path, :method => "get", :action => "index") do %>
+    <%= select_tag :new_default, options_for_select(possible_options) %>
+    <%= submit_tag 'Change default' %>
+<% end %>

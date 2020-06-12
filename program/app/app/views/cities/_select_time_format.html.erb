@@ -1,0 +1,5 @@
+<%= form_tag(cities_path, :method => "get", :action => "index") do %>
+    <%= check_box_tag :change_time_format %>
+    <%= submit_tag "change format" %>
+<% end %>
+

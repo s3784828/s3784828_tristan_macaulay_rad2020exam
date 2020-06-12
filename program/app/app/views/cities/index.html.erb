@@ -1,17 +1,21 @@
-
-  <%= render 'select_city', possible_options: @selectable_cities %>
-
+  <h1> Clock+ </h1>
+  <h4> By Tristan Macaulay s3784828 - highest level attempted = distinction </h4>
+ 
   <% if !@default.nil? %>
-    <Table style = "width: 50%; margin-bottom: 30px;" cellspacing = "0" cellpadding = "0">
+    <Table style = "width: 50%; margin-bottom: 0px;" cellspacing = "0" cellpadding = "0">
       <colgroup>
-        <col span="1" style="width: 50%;">
-        <col span="1" style="width: 50%">
+        <col span="1" style="width: 40%">
+        <col span="1" style="width: 35%">
+        <col span="1" style="width: 25%">
       </colgroup>
 
           <tr>
             <td>
-              <span><h2><%= @default.name.upcase %></h2></span>
+              <%= render 'select_city', possible_options: @selectable_cities %>
+            </td>
             <td>
+              <span><h2><%= @default.name.upcase %></h2></span>
+            </td>
             <td><h3><%= @default.display_time @enable_standard_format %></h3></td>
           </tr>
 

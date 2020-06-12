@@ -1,0 +1,34 @@
+<p id="notice"><%= notice %></p>
+
+<p>
+  <strong>Value:</strong>
+  <%= @zone.value %>
+</p>
+
+<p>
+  <strong>Abbr:</strong>
+  <%= @zone.abbr %>
+</p>
+
+<p>
+  <strong>Offset:</strong>
+  <%= @zone.offset %>
+</p>
+
+<p>
+  <strong>Isdt:</strong>
+  <%= @zone.isdt %>
+</p>
+
+<p>
+  <strong>Text:</strong>
+  <%= @zone.text %>
+</p>
+
+<p>
+  <strong>Utc:</strong>
+  <%= @zone.utc %>
+</p>
+
+<%= link_to 'Edit', edit_zone_path(@zone) %> |
+<%= link_to 'Back', zones_path %>

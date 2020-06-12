@@ -1,6 +1,5 @@
 class CitiesController < ApplicationController
   before_action :find_default
-  before_action :set_standard_format, only: [:index]
   before_action :update_time
   before_action :set_city, only: [:show, :edit, :update, :destroy]
 
@@ -16,48 +15,24 @@ class CitiesController < ApplicationController
     end
 
     if params[:new_default].present?
-      puts "present"
-      puts params[:new_default].to_s
       City.find_by(id: @default.id).remove_default
       City.find_by(id: params[:new_default]).make_default
       redirect_to root_url
     end
 
     if params[:change_time_format] == "1"
-      puts "CHANGING FORMAT"
-      # if @enable_standard_format
-      #   @enable_standard_format = false
-      # else
-      #   @enable_standard_format = true
-      # end
       @enable_standard_format = false
     end
 
     if params[:change_time_format] == "0"
-      puts "CHANGING FORMAT"
-      # if @enable_standard_format
-      #   @enable_standard_format = false
-      # else
-      #   @enable_standard_format = true
-      # end
       @enable_standard_format = true
     end
 
   end
 
-  # GET /cities/1
-  # GET /cities/1.json
-  def show
-  end
-
   # GET /cities/new
   def new
     @city = City.new
-
-  end
-
-  # GET /cities/1/edit
-  def edit
   end
 
   # POST /cities
@@ -65,8 +40,6 @@ class CitiesController < ApplicationController
   def create
 
     if params[:search].present?
-      #@search_result = Resource.find_by("lower(city_name) LIKE :search", search: "%#{@search}%")
-      #@search_result = Resource.find_by("city_name LIKE :search", search: "#{@search}")
       @search_result = Resource.find_by(city_name: params[:search].downcase)
       if (!@search_result.nil?)
         @city = City.new(
@@ -81,33 +54,6 @@ class CitiesController < ApplicationController
         redirect_to root_url
       else
         redirect_to root_url
-      end
-    end
-  end
-    
-    #@city = City.new(city_params)
-
-     
-
-    # respond_to do |format|
-    #   if @city.save
-    #     format.html { redirect_to @city, notice: 'City was successfully created.' }
-    #     format.json { render :index, status: :created, location: @city }
-    #   else
-    #     format.html { render :new }
-    #     format.json { render json: @city.errors, status: :unprocessable_entity }
-    #   end
-    # end
-  # PATCH/PUT /cities/1
-  # PATCH/PUT /cities/1.json
-  def update
-    respond_to do |format|
-      if @city.update(city_params)
-        format.html { redirect_to @city, notice: 'City was successfully updated.' }
-        format.json { render :show, status: :ok, location: @city }
-      else
-        format.html { render :edit }
-        format.json { render json: @city.errors, status: :unprocessable_entity }
       end
     end
   end
@@ -134,10 +80,6 @@ class CitiesController < ApplicationController
 
     def set_city
       @city = City.find(params[:id])
-    end
-
-    def set_standard_format
-      #@enable_standard_format = true
     end
 
     def update_time

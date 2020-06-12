@@ -34,12 +34,6 @@ ActiveRecord::Schema.define(version: 2020_06_12_051422) do
     t.datetime "updated_at", null: false
   end
 
-  create_table "selected_cities", force: :cascade do |t|
-    t.integer "city_id"
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
-  end
-
   create_table "zones", force: :cascade do |t|
     t.string "value"
     t.string "abbr"

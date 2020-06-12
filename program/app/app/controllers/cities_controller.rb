@@ -9,7 +9,7 @@ class CitiesController < ApplicationController
   # GET /cities.json
   def index
     @cities = City.all
-    #@enable_standard_format = true
+    @enable_standard_format = true
     @selectable_cities = []
     @cities.each do |city|
       @selectable_cities << [city.name, city.id]
@@ -31,6 +31,16 @@ class CitiesController < ApplicationController
       #   @enable_standard_format = true
       # end
       @enable_standard_format = false
+    end
+
+    if params[:change_time_format] == "0"
+      puts "CHANGING FORMAT"
+      # if @enable_standard_format
+      #   @enable_standard_format = false
+      # else
+      #   @enable_standard_format = true
+      # end
+      @enable_standard_format = true
     end
 
   end
@@ -72,8 +82,8 @@ class CitiesController < ApplicationController
       else
         redirect_to root_url
       end
-    
     end
+  end
     
     #@city = City.new(city_params)
 
@@ -88,29 +98,6 @@ class CitiesController < ApplicationController
     #     format.json { render json: @city.errors, status: :unprocessable_entity }
     #   end
     # end
-  end
-
-  def create_via_search
-    if params[:search].present?
-      puts "AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA"
-      @search = params[:search].downcase
-      @search_result = Resource.find_by("lower(city_name) LIKE :search", search: "%#{@search}%")
-      #puts @search_result.city_name
-      #puts @search_result.offset
-      if (!@search_result.nil? and !@search_result.city_name.nil? and @search_result.offset.nil?)
-        @city = City.new(
-          :name => @search_result.city_name,
-          :offset => @search_result.offset,
-          :default => false,
-          :time => Time.current,
-          :time_status => "",
-          :time_difference => 0.0
-        )
-        @city.save
-        redirect_to root_url
-      end
-    end 
-  end
   # PATCH/PUT /cities/1
   # PATCH/PUT /cities/1.json
   def update
@@ -150,7 +137,7 @@ class CitiesController < ApplicationController
     end
 
     def set_standard_format
-      @enable_standard_format = true
+      #@enable_standard_format = true
     end
 
     def update_time

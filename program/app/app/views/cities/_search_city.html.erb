@@ -1,8 +1,7 @@
 <%= form_tag(cities_path, :method => 'post', :action => 'create_via_search') do %>
 
-    <%= label_tag :search %>
     <%= text_field_tag :search %>
 
-    <%= submit_tag 'Search' %>
+    <%= submit_tag "Add City" %>
     
 <% end %>

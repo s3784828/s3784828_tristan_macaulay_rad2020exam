@@ -11,7 +11,17 @@
   <%= render 'header' %>
   <div class = container>
     <body>
-      <%= yield %>
+        <div id = "side-content-left">
+            <%= render "glossary"%>
+        </div>
+
+        <div id = "side-content-right">
+            <%= render "select_time_format", city: City %>
+        </div>
+
+        <div id = "main-content">
+            <%= yield %>
+        </div>
     </body>
   </div>
   <%= render 'footer'%>

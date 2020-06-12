@@ -13,6 +13,16 @@
 //= require rails-ujs
 //= require activestorage
 //= require turbolinks
-
+//= require jquery
+//= require jquery3
+//= require jquery_ujs
 //= require bootstrap
+//= require bootstrap-toggle-buttons
 //= require_tree .
+//= require_self
+$(document).ready(function(){
+    $('#checkbox').on('click', function () {
+        $('#form').submit();
+        print("SD")
+    });
+});

@@ -1,7 +1,5 @@
 class City < ApplicationRecord
 
-    has_one :selected_city
-
     def display_time standard_format
         if standard_format
             time.strftime("%H:%M")
@@ -15,6 +13,7 @@ class City < ApplicationRecord
             end
         end
     end
+            
 
     def make_default
         update_attribute(:default, true)
@@ -56,10 +55,6 @@ class City < ApplicationRecord
         time_difference = time - default_city.time
         time_difference /= 60
         time_difference /= 60
-
-
-
-
         update_attribute(:time_difference, time_difference.round)
     end
 
